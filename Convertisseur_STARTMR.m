@@ -1,9 +1,9 @@
 % Drive directory
-Drive_dir = '/media/madyroussat/Expansion/START_images_dicom/';
-Orga_dir = '/media/madyroussat/Expansion/START_organized';
+Drive_dir = '/Volumes/Expansion/START_images_dicom';
+Orga_dir = '/Volumes/Expansion/START_organized';
 
 % Add SPM to the path
-spmPath = '/home/madyroussat/Documents/Software/';
+spmPath = '/Users/madyroussat/Documents/';
 if exist(spmPath, 'dir')
     addpath(spmPath);
 else
@@ -11,10 +11,10 @@ else
 end
 
 % Path to the Excel file for START identifiers
-excelFile = '/home/madyroussat/Documents/GHU/START/Fichiers_suivi/ListeImagerieSTART_MR.xlsx';
+excelFile = '/Users/madyroussat/Library/Mobile Documents/com~apple~CloudDocs/Job/GHU/START/Fichiers_suivi/ListeImagerieSTART_MR.xlsx';
 
 % DCM2niix path
-dcm2niixPath = '/home/madyroussat/Documents/Software/dcm2niix';
+dcm2niixPath = '/opt/homebrew/Caskroom/miniconda/base/bin/dcm2niix';
 
 % Read the Excel file (specific columns for matching patient names and IDs)
 [~, ~, rawData] = xlsread(excelFile);
@@ -28,8 +28,8 @@ STARTGroupeColIdx = find(strcmp(headers, 'START_groupe')); % Find group columns
 dcmlist = {};
 
 % Loop through the directories 'repertoire_1' to 'repertoire_6'
-for i = 2:2
-    folderPath = fullfile(Drive_dir, sprintf('repertoire_%d', i));
+for r = 1:1
+    folderPath = fullfile(Drive_dir, sprintf('repertoire_%d', r));
     if exist(folderPath, 'dir')
         % Get all files matching 'IM0*' recursively in the current directory
         files = spm_select('FPListRec', folderPath, 'IM0');  % Recursive search for IM0*
@@ -55,7 +55,7 @@ infoTable = table('Size', [0 10], ...
     'VariableNames', {'START_ID', 'IRM_ID', 'PatientSex', 'PatientAge', 'PatientGroup', 'Date',  'SeriesDescription', 'FilePath', 'DICOMCount', 'NewDirectory'});
 
 % Open log file for writing
-logFile = fullfile(Orga_dir, 'conversion_log.txt');
+logFile = fullfile(Orga_dir, sprintf('Conversion_log_repertoire_%d.txt', r));
 fid = fopen(logFile, 'w');
 
 % Loop through the headers to extract information
@@ -362,7 +362,7 @@ fclose(fid);
 disp(infoTable);
 
 % Save the table as an Excel file
-%outputFile = fullfile(Orga_dir, 'Conversion_test.xlsx');
-%writetable(infoTable, outputFile, 'FileType', 'spreadsheet');
-%disp(['File saved at: ', outputFile]);
+outputFile = fullfile(Orga_dir, sprintf('Conversion_table_repertoire_%d.xlsx', r));
+writetable(infoTable, outputFile, 'FileType', 'spreadsheet');
+disp(['File saved at: ', outputFile]);
 
