@@ -28,7 +28,7 @@ STARTGroupeColIdx = find(strcmp(headers, 'START_groupe')); % Find group columns
 dcmlist = {};
 
 % Loop through the directories 'repertoire_1' to 'repertoire_6'
-for r = 1:1
+for r = 4:4
     folderPath = fullfile(Drive_dir, sprintf('repertoire_%d', r));
     if exist(folderPath, 'dir')
         % Get all files matching 'IM0*' recursively in the current directory
@@ -269,7 +269,8 @@ for i = 1:numel(info)
             filePrefix = sprintf('sub-%s_ses-0%d_%s', patientName, sessionNumber, seriesDesc);
             
         otherwise
-            fprintf('Serie %s not useful, so not converted\n', seriesDesc);
+        fprintf('Serie %s not useful, so not converted\n', seriesDesc);
+        continue;  % Skip to the next iteration of the for loop
     end
 
     % Define output directory
