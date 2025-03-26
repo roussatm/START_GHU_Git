@@ -28,7 +28,7 @@ STARTGroupeColIdx = find(strcmp(headers, 'START_groupe')); % Find group columns
 dcmlist = {};
 
 % Loop through the directories 'repertoire_1' to 'repertoire_6'
-for r = 4:4
+for r = 6:6
     folderPath = fullfile(Drive_dir, sprintf('repertoire_%d', r));
     if exist(folderPath, 'dir')
         % Get all files matching 'IM0*' recursively in the current directory
